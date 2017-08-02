@@ -2,7 +2,6 @@ package main.java.h;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import javafx.util.Pair;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -60,6 +59,30 @@ public class H {
                 for (Integer key : numMmap.keySet()) {
                     if (numMmap.get(key).size() > 1) {
                         System.out.println("key: " + numMmap.get(key));
+//                        for (String single : numMmap.get(key)) {
+//                            System.out.print(" s:" + Integer.parseInt(single));
+//                        }
+                        Set<Integer> dashSet = new HashSet<>();
+                        Map<Integer, Set> dashMap = new HashMap<>();
+                        int dashIndex = 0;
+                        for (int i = 0; i < numMmap.get(key).size(); i++) {
+                            int one = Integer.parseInt(numMmap.get(key).get(i));
+                            int two = 0;
+                            if ((i + 1) < numMmap.get(key).size()) {
+                                two = Integer.parseInt(numMmap.get(key).get(i + 1));
+                            } else continue;
+                            if (two == (one + 1)) {
+                                dashSet.add(i);
+                                dashSet.add(i + 1);
+                                dashMap.put(dashIndex, dashSet);
+                            } else {
+                                dashIndex++;
+                                dashSet = new HashSet<>();
+                            }
+
+                        }
+                        System.out.println("\n");
+                        System.out.println(dashMap);
                     }
                 }
             }
