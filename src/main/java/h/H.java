@@ -1,10 +1,10 @@
 package main.java.h;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -33,20 +33,37 @@ public class H {
         matcher1.find();
         System.out.println(matcher1.group(0).length());
 
-
-
-//        List<String> letters = new ArrayList<>();
-        List<Pair<String, String>> pairs = new ArrayList<>();
+//        Set<String> list = new HashSet<>();
+        String letters;
+        ListMultimap<String, String> mmap = ArrayListMultimap.create();
         for (String out : output) {
             matcher = pattern.matcher(out);
             matcher.find();
-//            letters.add(matcher.group(0));
             matcher1 = pattern1.matcher(out);
             matcher1.find();
-            pairs.add(new Pair<>(matcher.group(0), matcher1.group(0)));
-
+            letters = matcher.group(0);
+            mmap.put(letters, matcher1.group(0));
+//            list.add(letters);
+        }
+        System.out.println(mmap);
+        System.out.println(mmap.keySet());
+        for (String lis : mmap.keySet()) {
+            ListMultimap<Integer, String> numMmap = ArrayListMultimap.create();
+            List<String> numbers = mmap.get(lis);
+            if (numbers.size() > 1) {
+                System.out.println(numbers);
+                for (String num : numbers) {
+                    numMmap.put(num.length(), num);
+                }
+                System.out.println(numMmap);
+                System.out.println(numMmap.keySet());
+                for (Integer key : numMmap.keySet()) {
+                    if (numMmap.get(key).size() > 1) {
+                        System.out.println("key: " + numMmap.get(key));
+                    }
+                }
+            }
         }
 
-        System.out.println(pairs);
     }
 }
