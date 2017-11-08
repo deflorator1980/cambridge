@@ -10,8 +10,15 @@ import java.util.stream.Collectors;
 
 public class H0 {
     public static void main(String[] args) {
-        List<String> input = Arrays.asList("A00000", "A0001", "ERR000111", "ERR000112", "ERR000113", "ERR000115",
-                "ERR000116", "ERR100114", "ERR200000001", "ERR200000002", "ERR200000003", "DRR2110012", "SRR211001", "ABCDEFG1");
+//        List<String> input = Arrays.asList("A00000", "A0001", "ERR000111", "ERR000112", "ERR000113", "ERR000115",
+//                "ERR000116", "ERR100114", "ERR200000001", "ERR200000002", "ERR200000003", "DRR2110012", "SRR211001", "ABCDEFG1");
+
+//        List<String> input = Arrays.asList("A00000", "A0001", "ERR000111", "ERR000112", "ERR000113", "ERR000114", "ERR000115",
+//                "ERR000116", "ERR100114", "ERR200000001", "ERR200000002", "ERR200000003", "DRR2110012", "SRR211001", "ABCDEFG1");
+
+        List<String> input = Arrays.asList("A00000", "A0001", "ERR000111", "ERR000112", "ERR000113", "ERR000114", "ERR000115",
+                "ERR000116", "ERR100114", "ERR200000001", "ERR200000002", "ERR200000003", "DRR2110012","DRR2110013", "DRR2110014", "DRR21100144", "SRR211001", "ABCDEFG1");
+
         List<String> output = input.stream().sorted().collect(Collectors.toList());
         System.out.println("input:" + input);
         System.out.println("output:" + output);
@@ -41,8 +48,15 @@ public class H0 {
         List sortResult = result.stream().sorted().collect(Collectors.toList());
         System.out.println("sortRes:" + sortResult);
 
-        List<String> vals = mmap.get("ERR");
-        System.out.println(vals);
+        /**
+         * прогнать все буковки: mmap.keySet()
+         */
+        chifers(mmap, "DRR");
+    }
+
+    private static void chifers (ListMultimap<String, String> mmap, String letter) {
+        List<String> vals = mmap.get(letter);
+        System.out.println("vals: " + vals);
 
         ListMultimap<Integer, String> numMmap = ArrayListMultimap.create();
         for (String val : vals) {
@@ -54,14 +68,8 @@ public class H0 {
         for (int key : keySet) {
             dash(numMmap.get(key));
         }
-
-        /**todo
-         * скормить Dash и воссоздать
-         */
-
     }
-
-    private static void dash(List<String> strings) {
+    private static List<String> dash(List<String> strings) {
         System.out.println("\n" + strings);
         List<Integer> nums = new ArrayList<>();
         strings.forEach(s -> {
@@ -105,7 +113,8 @@ public class H0 {
                 i = i - 2;
             }
         }
-        System.out.println(strings2);
+        System.out.println("DASH " + strings2);
+        return strings2;
 
     }
 }
