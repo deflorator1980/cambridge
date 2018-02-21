@@ -45,13 +45,9 @@ public class H0 {
         }
 
         System.out.println("result:" + result);
-        List sortResult = result.stream().sorted().collect(Collectors.toList());
-        System.out.println("sortRes:" + sortResult);
-
-        /**
-         * прогнать все буковки: mmap.keySet()
-         */
-        chifers(mmap, "DRR");
+        for (String letters : mmap.keySet()) {
+            chifers(mmap, letters);
+        }
     }
 
     private static void chifers (ListMultimap<String, String> mmap, String letter) {
@@ -62,11 +58,16 @@ public class H0 {
         for (String val : vals) {
             numMmap.put(val.length(), val);
         }
+        System.out.println("First value — length of number");
         System.out.println(numMmap);
 
         Set<Integer> keySet = numMmap.keySet();
         for (int key : keySet) {
+            if (numMmap.get(key).size() < 2) continue;
             dash(numMmap.get(key));
+
+            //todo append letters to strings2
+
         }
     }
     private static List<String> dash(List<String> strings) {

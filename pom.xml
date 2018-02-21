@@ -6,14 +6,55 @@
 
     <groupId>groupId</groupId>
     <artifactId>cambridge</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1</version>
 
     <!--<properties>-->
-        <!--<java.version>1.8</java.version>-->
+    <!--<java.version>1.8</java.version>-->
     <!--</properties>-->
+    <build>
+        <plugins>
+            <plugin>
+                <!--mvn exec:java-->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <mainClass>garbage.Opp</mainClass>
+                    <arguments>
+                        <argument>argument1</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+            <!--// for mvn dependencies-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <mainClass>garbage.Opp</mainClass>
+                                </manifest>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--//http://bit.ly/2uIbLU2-->
+        </plugins>
+    </build>
+
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.9</maven.compiler.source>
+        <maven.compiler.target>1.9</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>

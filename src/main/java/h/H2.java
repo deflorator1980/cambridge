@@ -62,7 +62,7 @@ public class H2 {
         }
         return sameList;
         /**
-         * todo return different lists
+         * return different lists
          */
     }
 
