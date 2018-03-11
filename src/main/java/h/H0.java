@@ -10,18 +10,12 @@ import java.util.stream.Collectors;
 
 public class H0 {
     public static void main(String[] args) {
-//        List<String> input = Arrays.asList("A00000", "A0001", "ERR000111", "ERR000112", "ERR000113", "ERR000115",
-//                "ERR000116", "ERR100114", "ERR200000001", "ERR200000002", "ERR200000003", "DRR2110012", "SRR211001", "ABCDEFG1");
-
-//        List<String> input = Arrays.asList("A00000", "A0001", "ERR000111", "ERR000112", "ERR000113", "ERR000114", "ERR000115",
-//                "ERR000116", "ERR100114", "ERR200000001", "ERR200000002", "ERR200000003", "DRR2110012", "SRR211001", "ABCDEFG1");
-
         List<String> input = Arrays.asList("A00000", "A0001", "ERR000111", "ERR000112", "ERR000113", "ERR000114", "ERR000115",
-                "ERR000116", "ERR100114", "ERR200000001", "ERR200000002", "ERR200000003", "DRR2110012","DRR2110013", "DRR2110014", "DRR21100144", "SRR211001", "ABCDEFG1");
+                "ERR000116", "ERR100114", "ERR200000001", "ERR200000002", "ERR200000003", "DRR2110012", "DRR2110013", "DRR2110014", "DRR21100144", "SRR211001", "ABCDEFG1");
 
         List<String> output = input.stream().sorted().collect(Collectors.toList());
         System.out.println("input:" + input);
-        System.out.println("output:" + output);
+//        System.out.println("output:" + output);
 
         ListMultimap<String, String> mmap = ArrayListMultimap.create();
         Pattern pattern = Pattern.compile("[A-z]+");
@@ -33,7 +27,7 @@ public class H0 {
             matcher1.find();
             mmap.put(matcher.group(0), matcher1.group(0));
         }
-        System.out.println("mmap:" + mmap);
+//        System.out.println("mmap:" + mmap);
 
         Set<String> keys = mmap.keySet();
         List<String> result = new ArrayList<>();
@@ -44,39 +38,42 @@ public class H0 {
             }
         }
 
-        System.out.println("result:" + result);
+//        System.out.println("result:" + result);
+        List<String> output2 = new ArrayList<>();
         for (String letters : mmap.keySet()) {
-            chifers(mmap, letters);
+            output2.addAll(chifers(mmap, letters));
         }
+//        System.out.println(output2);
+        output = output2.stream().sorted().collect(Collectors.toList());
+        System.out.println("output:" + output);
     }
 
-    private static void chifers (ListMultimap<String, String> mmap, String letter) {
+    private static List<String> chifers(ListMultimap<String, String> mmap, String letter) {
         List<String> vals = mmap.get(letter);
-        System.out.println("vals: " + vals);
+//        System.out.println("vals: " + vals);
 
         ListMultimap<Integer, String> numMmap = ArrayListMultimap.create();
         for (String val : vals) {
             numMmap.put(val.length(), val);
         }
-        System.out.println("First value — length of number");
-        System.out.println(numMmap);
+//        System.out.println("First value — length of number");
+//        System.out.println(numMmap);
 
+        List<String> list = new ArrayList<>();
         Set<Integer> keySet = numMmap.keySet();
         for (int key : keySet) {
-            if (numMmap.get(key).size() < 2) continue;
-            dash(numMmap.get(key));
-
-            //todo append letters to strings2
-
+            if (numMmap.get(key).size() < 2) {
+                list.add(letter + numMmap.get(key).toString().replaceAll("\\[", "").replaceAll("\\]", ""));
+            } else list.addAll(dash(numMmap.get(key), letter));
         }
+        return list;
     }
-    private static List<String> dash(List<String> strings) {
-        System.out.println("\n" + strings);
+
+    private static List<String> dash(List<String> strings, String letter) {
+//        System.out.println("\n" + strings);
         List<Integer> nums = new ArrayList<>();
-        strings.forEach(s -> {
-            nums.add(Integer.parseInt(s));
-        });
-        System.out.println(nums);
+        strings.forEach(s -> nums.add(Integer.parseInt(s)));
+//        System.out.println(nums);
         for (int i = 0; i < nums.size(); i++) {
             int a = nums.get(i);
             if (i < nums.size() - 2) {
@@ -86,35 +83,37 @@ public class H0 {
                     strings.set(i + 1, "-");
                 }
             }
-            System.out.println(nums.get(i));
+//            System.out.println(nums.get(i));
         }
-        System.out.println(strings);
-        System.out.println(strings.size());
+//        System.out.println(strings);
+//        System.out.println(strings.size());
 
         List<String> strings2 = new LinkedList<>();
         strings2.addAll(strings);
         for (int i = 0; i < strings2.size(); i++) {
             String a = strings2.get(i);
             if (a == "-") {
-                if(strings2.get(i+1) == "-"){
+                if (strings2.get(i + 1) == "-") {
                     strings2.remove(i);
                     --i;
                 }
             }
         }
-        System.out.println(strings2);
+//        System.out.println(strings2);
 
         for (int i = 0; i < strings2.size(); i++) {
             if (strings2.get(i) == "-") {
-                String a =  strings2.get(i-1) + "-" + strings2.get(i+1);
-                strings2.set(i-1, a);
+                String a = strings2.get(i - 1) + "-" + strings2.get(i + 1);
+                strings2.set(i - 1, a);
                 strings2.remove(i);
 //                strings2.remove(i+1);
                 strings2.remove(i);
                 i = i - 2;
             }
         }
-        System.out.println("DASH " + strings2);
+//        System.out.println("DASH " + strings2);
+        strings2 = strings2.stream().map(s -> letter + s).map(s -> s.replace("-", "-" + letter)).collect(Collectors.toList());
+//        System.out.println(strings2);
         return strings2;
 
     }
